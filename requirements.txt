@@ -1,0 +1,4 @@
+spython
+rich
+typer[all]
+loguru
