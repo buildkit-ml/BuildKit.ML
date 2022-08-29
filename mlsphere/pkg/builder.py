@@ -1,8 +1,11 @@
 import os
 from typing import Dict
+
 import requests
-from spython.main import Client
 from loguru import logger
+from spython.main import Client
+
+
 class Builder:
     def __init__(self) -> None:
         self.client = Client
@@ -28,3 +31,5 @@ class Builder:
             for chunk in get_response.iter_content(chunk_size=1024):
                 if chunk:  # filter out keep-alive new chunks
                     f.write(chunk)
+        # renaming the file_name to config['target']
+        os.rename(file_name, config['target'])

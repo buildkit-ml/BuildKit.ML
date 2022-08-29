@@ -2,3 +2,6 @@
 mls.egg-info
 build/
 dist/
+mlsphere.egg-info
+dist/
+build/

@@ -1,8 +1,11 @@
-import os
+#! python
 import json
+import os
+from typing import Optional
+
 import typer
 from loguru import logger
-from typing import Optional
+
 from mlsphere.pkg.builder import Builder
 from mlsphere.pkg.runner import Runner
 

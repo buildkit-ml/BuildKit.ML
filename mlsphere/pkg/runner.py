@@ -1,6 +1,8 @@
 import os
 from typing import Dict
+
 from spython.main import Client
+
 
 class Runner:
     def __init__(self):
@@ -16,7 +18,6 @@ class Runner:
             bind.append(f"{src_dir}:{value}")
         
         self.client.load(os.path.join(build_folder, config['target']))
-
 
         for line in self.client.execute(
             config['scripts'][command].split(" "),
