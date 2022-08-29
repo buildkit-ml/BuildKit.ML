@@ -52,6 +52,19 @@ def run_pipeline(src_path: Optional[str] = './'):
     builder = Builder()
     builder.build(config)
 
+@app.command()
+def pull(src_path: Optional[str] = './'):
+    """
+    Pull the image from mlsphere.json
+    """
+    src_path = os.path.join(src_path, "mlsphere.json")
+    logger.info(f"Source Code Path: {src_path}")
+
+    with open(src_path, 'r') as fp:
+        config = json.load(fp)
+
+    builder = Builder()
+    builder.download(config)
 
 if __name__ == "__main__":
     app()

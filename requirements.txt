@@ -2,3 +2,4 @@ spython
 rich
 typer[all]
 loguru
+requests

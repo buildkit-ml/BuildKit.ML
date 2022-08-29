@@ -1,7 +1,6 @@
 import os
 from typing import Dict
 from spython.main import Client
-from loguru import logger
 
 class Runner:
     def __init__(self):
