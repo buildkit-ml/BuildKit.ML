@@ -3,10 +3,11 @@ import json
 import typer
 from loguru import logger
 from typing import Optional
-from mlbox.src.pkg.builder import Builder
-from mlbox.src.pkg.runner import Runner
+from mlsphere.pkg.builder import Builder
+from mlsphere.pkg.runner import Runner
 
 app = typer.Typer()
+
 
 @app.command()
 def build(src_path: Optional[str] = './'):
@@ -15,25 +16,30 @@ def build(src_path: Optional[str] = './'):
     """
     src_path = os.path.join(src_path, "mlsphere.json")
     logger.info(f"Source Code Path: {src_path}")
-    
+
     with open(src_path, 'r') as fp:
         config = json.load(fp)
-    
+
     builder = Builder()
     builder.build(config)
 
 
 @app.command()
-def run(src_path: Optional[str] = './'):
+def run(command: str):
     """
     Run a specific command defined in mlsphere.json
     """
+    src_path="./"
+    if command.strip() == "":
+        logger.error("Please provide a command to run")
+        return
+    logger.info(f"Running command {command}")
     src_path = os.path.join(src_path, "mlsphere.json")
-    logger.info(f"Source Code Path: {src_path}")
     with open(src_path, 'r') as fp:
         config = json.load(fp)
     runner = Runner()
-    runner.run_command(config)
+    runner.run_command(config, command=command)
+
 
 @app.command()
 def run_pipeline(src_path: Optional[str] = './'):
@@ -45,6 +51,7 @@ def run_pipeline(src_path: Optional[str] = './'):
         config = json.load(fp)
     builder = Builder()
     builder.build(config)
+
 
 if __name__ == "__main__":
     app()
