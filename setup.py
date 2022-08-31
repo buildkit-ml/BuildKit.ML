@@ -5,7 +5,7 @@ setup(
     author="Xiaozhe Yao",
     author_email="askxzyao@gmail.com",
     description="Run ML models within containerized, rootless and immutable environment",
-    version='0.0.2',
+    version='0.0.5',
     scripts=['mlsphere/cli/mls.py'],
     package_dir={'mlsphere': 'mlsphere'},
     packages=find_packages(),
@@ -15,6 +15,7 @@ setup(
         "typer[all]",
         "loguru",
         "requests",
+        "pySmartDL"
     ],
     project_urls={
         "Bug Tracker": "https://github.com/yao-sh/mlsphere/issues",

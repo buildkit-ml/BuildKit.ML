@@ -1,10 +1,8 @@
 import os
 from typing import Dict
-
-import requests
 from loguru import logger
 from spython.main import Client
-
+from pySmartDL import SmartDL
 
 class Builder:
     def __init__(self) -> None:
@@ -25,11 +23,8 @@ class Builder:
         os.system(f"singularity sign {config['target']}")
 
     def download(self, config: Dict) -> None:
-        get_response = requests.get(config['pull'], stream=True)
-        file_name = config['pull'].split("/")[-1]
-        with open(file_name, 'wb') as f:
-            for chunk in get_response.iter_content(chunk_size=1024):
-                if chunk:  # filter out keep-alive new chunks
-                    f.write(chunk)
-        # renaming the file_name to config['target']
+        logger.info(f"Downloading image from {config['pull']} to ./")
+        obj = SmartDL(config['pull'], './')
+        obj.start()
+        file_name = obj.get_dest()
         os.rename(file_name, config['target'])

@@ -3,3 +3,4 @@ rich
 typer[all]
 loguru
 requests
+boto3
