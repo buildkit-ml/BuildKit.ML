@@ -45,16 +45,16 @@ def run(command: str, image_path: str):
 
 
 @app.command()
-def run_pipeline(image_path: Optional[str] = './'):
+def run_pipeline(image_path: Optional[str] = './', webhook: Optional[str] = ''):
     """
     Run the pipeline defined in mlsphere.json
     """
-    src_path = os.path.join(".", "mlsphere.json")
+    src_path = os.path.abspath(os.path.join(".", "mlsphere.json"))
     logger.info(f"Source Code Path: {src_path}")
     with open(src_path, 'r') as fp:
         config = json.load(fp)
     runner = Runner()
-    runner.run_pipeline(config, image_path=image_path)
+    runner.run_pipeline(config, image_path=image_path, webhook=webhook)
 
 @app.command()
 def pull(src_path: Optional[str] = './'):

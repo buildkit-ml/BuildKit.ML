@@ -4,6 +4,7 @@ from loguru import logger
 import requests
 from spython.main import Client
 
+
 class Runner:
     def __init__(self):
         self.client = Client
@@ -20,7 +21,7 @@ class Runner:
             self.client.load(os.path.join(build_folder, config['target']))
         else:
             self.client.load(os.path.join(image_path, config['target']))
-            
+
         for line in self.client.execute(
             config['scripts'][command].split(" "),
             bind=bind,
@@ -40,10 +41,24 @@ class Runner:
             "returned_payload": {},
             "status": "finished",
             "source": "dataperf",
-            "processed_by":"",
+            "processed_by": "",
         })
-        print(res.text)
-    
-    def run_pipeline(self, config: Dict, image_path=None):
+
+    def run_pipeline(self, config: Dict, image_path=None, webhook=""):
+        if webhook != "":
+            # update status to be running
+            res = requests.post(webhook, json={
+                "type": "general",
+                "status": "running",
+            })
         for command in config['pipeline']:
-            self.run_command(config, command, image_path)
+           self.run_command(config, command, image_path)
+        if webhook != "":
+            # find results and push to toma
+            res = requests.post(webhook, json={
+                "type": "general",
+                "status": "finished",
+                "returned_payload": {
+                    "files": os.listdir("results/")
+                },
+            })
