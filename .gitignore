@@ -1,7 +1,7 @@
 *.pyc
-mls.egg-info
+bkm.egg-info
 build/
 dist/
-mlsphere.egg-info
+bkm.egg-info
 dist/
 build/

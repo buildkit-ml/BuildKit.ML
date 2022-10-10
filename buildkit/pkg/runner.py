@@ -12,7 +12,6 @@ class Runner:
 
     def run_command(self, config: Dict, command: str, image_path=None):
         build_folder = os.path.abspath(os.path.dirname(config['recipe']))
-        print(os.path.join(build_folder, config['target']))
         bind = []
         for key, value in config['bind'].items():
             src_dir = os.path.join(build_folder, key)
@@ -29,20 +28,6 @@ class Runner:
             stream=True,
         ):
             print(line, end='')
-
-    def push_toma(self, config, command: str) -> str:
-        logger.info("Pushing image to Toma Job Queue")
-        res = requests.post("http://planetd.shift.ml/jobs", json={
-            "type": "general",
-            "payload": {
-                "config": config,
-                "command": command,
-            },
-            "returned_payload": {},
-            "status": "finished",
-            "source": "dataperf",
-            "processed_by": "",
-        })
 
     def run_pipeline(self, config: Dict, image_path=None, webhook=""):
         if webhook != "":

@@ -10,17 +10,24 @@ class Builder:
 
     def build(self, config: Dict) -> None:
         build_folder = os.path.abspath(os.path.dirname(config['recipe']))
-        print(build_folder)
+        options = []
+        if 'nvidia' in config:
+            if config['nvidia']:
+                options.append('--nv')
+        if 'fakerook' in config:
+            if config['fakeroot']:
+                options.append('--fakeroot')
+        
         self.client.build(
             recipe=config['recipe'],
             image=config['target'],
             sudo=False,
             build_folder=build_folder,
-            options=["--fakeroot"],
+            options=["--nv"],
         )
-        if config['sign']:
+        if 'sign' in config:
             logger.info("Signing image with your pgp key")
-        os.system(f"singularity sign {config['target']}")
+            os.system(f"singularity sign {config['target']}")
 
     def download(self, config: Dict) -> None:
         logger.info(f"Downloading image from {config['pull']} to ./")

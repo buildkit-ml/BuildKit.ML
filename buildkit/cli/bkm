@@ -6,9 +6,9 @@ import shutil
 from loguru import logger
 from typing import Optional
 
-from mlsphere.pkg.builder import Builder
-from mlsphere.pkg.runner import Runner
-from mlsphere.pkg.utils import upload
+from buildkit.pkg.builder import Builder
+from buildkit.pkg.runner import Runner
+from buildkit.pkg.utils import upload
 
 app = typer.Typer()
 
@@ -17,7 +17,7 @@ def build(src_path: Optional[str] = './'):
     """
     Build the image from mlsphere.json
     """
-    src_path = os.path.join(src_path, "mlsphere.json")
+    src_path = os.path.join(src_path, "build.json")
     logger.info(f"Source Code Path: {src_path}")
 
     with open(src_path, 'r') as fp:
@@ -28,19 +28,20 @@ def build(src_path: Optional[str] = './'):
 
 
 @app.command()
-def run(command: str, image_path: str):
+def run(command: str, image_path: Optional[str]):
     """
-    Run a specific command defined in mlsphere.json
+    Run a specific command defined in bkm.json
     """
-    src_path="./"
     if command.strip() == "":
         logger.error("Please provide a command to run")
         return
-    logger.info(f"Running command {command}")
-    src_path = os.path.join(src_path, "mlsphere.json")
+    src_path="./"
+    src_path = os.path.join(src_path, "build.json")
     with open(src_path, 'r') as fp:
         config = json.load(fp)
     runner = Runner()
+    if image_path is None:
+        image_path = "./"
     runner.run_command(config, command=command, image_path=image_path)
 
 
@@ -49,7 +50,7 @@ def run_pipeline(image_path: Optional[str] = './', webhook: Optional[str] = ''):
     """
     Run the pipeline defined in mlsphere.json
     """
-    src_path = os.path.abspath(os.path.join(".", "mlsphere.json"))
+    src_path = os.path.abspath(os.path.join(".", "build.json"))
     logger.info(f"Source Code Path: {src_path}")
     with open(src_path, 'r') as fp:
         config = json.load(fp)
@@ -61,7 +62,7 @@ def pull(src_path: Optional[str] = './'):
     """
     Pull the image from mlsphere.json
     """
-    src_path = os.path.join(src_path, "mlsphere.json")
+    src_path = os.path.join(src_path, "build.json")
     logger.info(f"Source Code Path: {src_path}")
 
     with open(src_path, 'r') as fp:
@@ -80,7 +81,7 @@ def distribute(command: str):
         logger.error("Please provide a command to run")
         return
     logger.info(f"Distributing command {command}")
-    src_path = os.path.join(src_path, "mlsphere.json")
+    src_path = os.path.join(src_path, "build.json")
     with open(src_path, 'r') as fp:
         config = json.load(fp)
     runner = Runner()
@@ -91,7 +92,7 @@ def upload_results(src_path: Optional[str] = './', bucket: Optional[str] = 'mlsp
     """
     Pull the image from mlsphere.json
     """
-    src_path = os.path.join(src_path, "mlsphere.json")
+    src_path = os.path.join(src_path, "build.json")
     logger.info(f"Source Code Path: {src_path}")
 
     with open(src_path, 'r') as fp:
