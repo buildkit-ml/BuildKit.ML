@@ -11,19 +11,16 @@ class Builder:
     def build(self, config: Dict) -> None:
         build_folder = os.path.abspath(os.path.dirname(config['recipe']))
         options = []
-        if 'nvidia' in config:
-            if config['nvidia']:
-                options.append('--nv')
-        if 'fakerook' in config:
+        
+        if 'fakeroot' in config:
             if config['fakeroot']:
                 options.append('--fakeroot')
-        
         self.client.build(
             recipe=config['recipe'],
             image=config['target'],
             sudo=False,
             build_folder=build_folder,
-            options=["--nv"],
+            options=options,
         )
         if 'sign' in config:
             logger.info("Signing image with your pgp key")

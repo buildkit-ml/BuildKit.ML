@@ -20,11 +20,17 @@ class Runner:
             self.client.load(os.path.join(build_folder, config['target']))
         else:
             self.client.load(os.path.join(image_path, config['target']))
-
+        options = ['--pwd', '/app']
+        
+        if 'nvidia' in config:
+            if config['nvidia']:
+                options.append('--nv')
+        if 'env' in config:
+            options.append(f"--env-file {config['env']}")
         for line in self.client.execute(
             config['scripts'][command].split(" "),
             bind=bind,
-            options=['--pwd', '/app'],
+            options=options,
             stream=True,
         ):
             print(line, end='')
