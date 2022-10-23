@@ -11,7 +11,6 @@ class Builder:
     def build(self, config: Dict) -> None:
         build_folder = os.path.abspath(os.path.dirname(config['recipe']))
         options = []
-        
         if 'fakeroot' in config:
             if config['fakeroot']:
                 options.append('--fakeroot')

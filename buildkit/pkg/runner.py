@@ -14,8 +14,7 @@ class Runner:
         build_folder = os.path.abspath(os.path.dirname(config['recipe']))
         bind = []
         for key, value in config['bind'].items():
-            src_dir = os.path.join(build_folder, key)
-            bind.append(f"{src_dir}:{value}")
+            bind.append(f"{value}:{key}")
         if image_path is None:
             self.client.load(os.path.join(build_folder, config['target']))
         else:
