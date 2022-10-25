@@ -4,3 +4,4 @@ typer[all]
 loguru
 requests
 boto3
+pySmartDL
